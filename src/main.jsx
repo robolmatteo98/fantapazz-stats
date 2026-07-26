@@ -100,7 +100,7 @@ function App() {
       <div className="sidebar-foot">DATI LOCALI<br /><span>Importati dai file CSV</span></div>
     </aside>
     <main className="content">
-      <header className="topbar"><div className="mobile-brand"><span className="brand-mark">F</span> Fantapazz Stats</div><div className="top-season">{seasonLabel} <span>•</span> Lega Fantapazz</div><div className="avatar">FP</div></header>
+      <header className="topbar"><div className="mobile-brand"><span className="brand-mark">F</span> Fantapazz Stats</div><div className="top-season">{seasonLabel} <span>•</span> Lega Fantapazz</div><label className="mobile-season"><span>Stagione</span><select aria-label="Seleziona stagione" value={season} onChange={(event) => setSeason(event.target.value)}>{seasons.map((value) => <option key={value} value={value}>{value.replace('_', '/')}</option>)}</select></label><div className="avatar">FP</div></header>
       <section className="page-heading"><div><p className="eyebrow">PANORAMICA DELLA LEGA</p><h1>{current.label}</h1><p className="subheading">Classifica e statistiche della stagione {seasonLabel}</p></div><div className="data-badge"><span className="pulse" /> Dati aggiornati</div></section>
       {loading && <div className="state-card">Caricamento dati…</div>}
       {error && <div className="state-card error">{error}. Avvia l’app tramite <code>npm run dev</code> per servire i file locali.</div>}
@@ -127,7 +127,12 @@ function Roster({ rows, teams }) {
   const [selected, setSelected] = useState(teams[0] || '')
   useEffect(() => setSelected(teams[0] || ''), [teams])
   const roster = rows.filter((row) => row.squadra === selected)
-  return <div className="roster-grid"><div className="panel roster-selector"><div className="panel-toolbar"><div><h2>Seleziona una rosa</h2><p>Consulta i giocatori di ogni squadra</p></div></div><label>Squadra<select value={selected} onChange={(event) => setSelected(event.target.value)}>{teams.map((team) => <option key={team} value={team}>{team}</option>)}</select></label><div className="roster-summary"><span className="big-number">{roster.length}</span><span>giocatori<br />in rosa</span></div></div><div className="panel roster-list"><div className="panel-toolbar"><div><h2>{selected || 'Rosa'}</h2><p>Rosa completa</p></div></div>{roster.length ? <div className="players">{roster.map((player, index) => <div className="player" key={`${player.giocatore}-${index}`}><span className={`role role-${String(player.ruolo).toLowerCase().slice(0, 3)}`}>{player.ruolo || '—'}</span><span>{player.giocatore}</span>{player.quotazione && <strong>{player.quotazione}</strong>}</div>)}</div> : <p className="empty">Nessun giocatore trovato per questa squadra.</p>}</div></div>
+  const clubCounts = Object.entries(roster.reduce((counts, player) => {
+    const club = String(player.club || '').trim() || 'Squadra non indicata'
+    counts[club] = (counts[club] || 0) + 1
+    return counts
+  }, {})).sort(([, countA], [, countB]) => countB - countA)
+  return <div className="roster-grid"><div className="panel roster-selector"><div className="panel-toolbar"><div><h2>Seleziona una rosa</h2><p>Consulta i giocatori di ogni squadra</p></div></div><label>Squadra<select value={selected} onChange={(event) => setSelected(event.target.value)}>{teams.map((team) => <option key={team} value={team}>{team}</option>)}</select></label><div className="roster-summary"><span className="big-number">{roster.length}</span><span>giocatori<br />in rosa</span></div>{clubCounts.length > 0 && <div className="club-counts"><p>Giocatori per club</p>{clubCounts.map(([club, count]) => <div className="club-count" key={club}><span>{club}</span><strong>{count}</strong></div>)}</div>}</div><div className="panel roster-list"><div className="panel-toolbar"><div><h2>{selected || 'Rosa'}</h2><p>Rosa completa</p></div></div>{roster.length ? <div className="players">{roster.map((player, index) => { const role = String(player.ruolo).toLowerCase().slice(0, 3); return <div className={`player player-${role}`} key={`${player.giocatore}-${index}`}><span className={`role role-${role}`}>{player.ruolo || '—'}</span><span className="player-details"><span>{player.giocatore}</span>{player.club && <small>{player.club}</small>}</span>{player.quotazione && <strong>{player.quotazione}</strong>}</div> })}</div> : <p className="empty">Nessun giocatore trovato per questa squadra.</p>}</div></div>
 }
 
 createRoot(document.getElementById('root')).render(<App />)
