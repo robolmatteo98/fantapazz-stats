@@ -1,0 +1,19 @@
+﻿Stato;Giocatore;Ruolo;Voto;BonusMalus;CalciatoreId
+Titolare;Donnarumma G.;P;6;imgBonus size-s imgBonus_10;181
+Titolare;Kolarov;D;6.5;imgBonus size-s imgBonus_9;1600
+Titolare;Romagnoli A.;D;6;;404
+Titolare;Gosens;D;6.5;;1533
+Titolare;Criscito;D;7;imgBonus size-s imgBonus_3;1804
+Titolare;Orsolini;C;8;imgBonus size-s imgBonus_1|imgBonus size-s imgBonus_9|imgBonus size-s imgBonus_15;1519
+Titolare;Verdi;C;5.5;;466
+Titolare;Milinkovic S.;C;5.5;;760
+Titolare;Calhanoglu;C;6;;1507
+Titolare;Ilicic;A;5.5;imgBonus size-s imgBonus_6;249
+Titolare;Lozano;A;6.5;;2108
+Riserva;Consigli;P;5;imgBonus size-s imgBonus_2|imgBonus size-s imgBonus_2|imgBonus size-s imgBonus_2|imgBonus size-s imgBonus_2;147
+Riserva;Marusic;D;;;1506
+Riserva;Manolas;D;;;300
+Riserva;Pulgar;C;6;;931
+Riserva;Zielinski;C;6.5;;486
+Riserva;Defrel;A;5.5;;801
+Riserva;Pazzini;A;;;362

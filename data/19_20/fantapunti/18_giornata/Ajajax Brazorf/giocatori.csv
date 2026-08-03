@@ -1,0 +1,19 @@
+﻿Stato;Giocatore;Ruolo;Voto;BonusMalus;CalciatoreId
+Titolare;Meret;P;5;imgBonus size-s imgBonus_2|imgBonus size-s imgBonus_2|imgBonus size-s imgBonus_2;325
+Titolare;Florenzi;D;5.5;imgBonus size-s imgBonus_6;202
+Titolare;Calabria;D;5;;668
+Titolare;Romulo;D;5.5;;405
+Titolare;Lulic;D;6;;290
+Titolare;Poli A.;C;6;;380
+Titolare;Rincon;C;6.5;imgBonus size-s imgBonus_9;398
+Titolare;Callejon;C;6.5;imgBonus size-s imgBonus_9;121
+Titolare;Di Francesco;C;6;;1206
+Titolare;Immobile;A;7.5;imgBonus size-s imgBonus_1|imgBonus size-s imgBonus_3|imgBonus size-s imgBonus_15;1084
+Titolare;Balotelli;A;7;imgBonus size-s imgBonus_1|imgBonus size-s imgBonus_6;1012
+Riserva;Ospina;P;;;1869
+Riserva;Caicedo;A;6.5;imgBonus size-s imgBonus_9;1631
+Riserva;De Silvestri;D;6;;163
+Riserva;Under;C;;;1555
+Riserva;Benassi;C;7;imgBonus size-s imgBonus_1;81
+Riserva;Ghiglione;D;;;745
+Riserva;Troost-Ekong;D;6;;1873
