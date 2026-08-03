@@ -1,11 +1,11 @@
-﻿Squadra;Punti;Vittorie;Nulle;Sconfitte;GolFa;GolSu;FantaPunti
-"Quack Quack Team";82;26;4;8;79;50;2860,5;
-"No Good Team";72;22;6;10;72;46;2812;
-"Capezzoli Innevati";56;15;11;12;74;67;2806;
-LosPiscoLakers;55;16;7;15;53;61;2698;
-"A.S. Temio";54;16;6;16;66;67;2797,5;
-Scarsenal;54;16;6;16;65;67;2781,5;
-Birrareal;53;15;8;15;62;52;2727,5;
-"F.O.C A.C Cina";43;11;10;17;74;80;2820,5;
-"Tettenham hotsbur";35;10;5;23;47;75;2641,5;
-Mignottingham;30;7;9;22;38;65;2610,5;
+﻿Squadra;Punti;Vittorie;Nulle;Sconfitte;GolFa;GolSu;FantaPunti;PG;
+"Quack Quack Team";82;26;4;8;79;50;2860,5;38;
+"No Good Team";72;22;6;10;72;46;2812;38;
+"Capezzoli Innevati";56;15;11;12;74;67;2806;38;
+LosPiscoLakers;55;16;7;15;53;61;2698;38;
+"A.S. Temio";54;16;6;16;66;67;2797,5;38;
+Scarsenal;54;16;6;16;65;67;2781,5;38;
+Birrareal;53;15;8;15;62;52;2727,5;38;
+"F.O.C A.C Cina";43;11;10;17;74;80;2820,5;38;
+"Tettenham hotsbur";35;10;5;23;47;75;2641,5;38;
+Mignottingham;30;7;9;22;38;65;2610,5;38;

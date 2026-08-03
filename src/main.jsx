@@ -39,6 +39,11 @@ function normalizeTeam(value) {
   return String(value ?? '').trim().toLocaleLowerCase('it-IT')
 }
 
+function changeSeason(event, setSeason, setPage) {
+  setPage('championship')
+  setSeason(event.target.value)
+}
+
 function withUsers(rows, users) {
   const owners = new Map(users.map((row) => [normalizeTeam(row.Squadra), row.Utente || '—']))
   return rows.map((row) => ({ ...row, Utente: owners.get(normalizeTeam(row.Squadra)) || '—' }))
@@ -67,7 +72,7 @@ async function fetchSeasonSummary(season) {
 }
 
 function App() {
-  const [page, setPage] = useState('fantasy')
+  const [page, setPage] = useState('championship')
   const [season, setSeason] = useState(availableSeasons[availableSeasons.length - 1] || '')
   const seasons = availableSeasons
   const [data, setData] = useState({ fantasy: [], championship: [], champions: [], scorers: [], users: [], rosters: [] })
@@ -120,10 +125,11 @@ function App() {
   }, [season])
 
   useEffect(() => {
+    if (loading) return
     const currentNav = navItems.find((item) => item.id === page)
     if (currentNav?.id === 'championship' && !data.championship.length) setPage('fantasy')
     if (currentNav?.id === 'champions' && !data.champions.length) setPage('fantasy')
-  }, [data.championship, data.champions, page])
+  }, [data.championship, data.champions, loading, page])
 
   const teams = useMemo(() => [...new Set(data.rosters.map((row) => row.squadra).filter(Boolean))], [data.rosters])
   const users = useMemo(() => {
@@ -137,12 +143,13 @@ function App() {
   return <div className="app-shell">
     <aside className="sidebar">
       <div className="brand"><span className="brand-mark">F</span><span>Fantapazz<br /><small>STATS</small></span></div>
-      <label className="season"><span className="live-dot" /> Stagione<select value={season} onChange={(event) => setSeason(event.target.value)}>{seasons.map((value) => <option key={value} value={value}>{value.replace('_', '/')}</option>)}</select></label>
-      <nav>{visibleNavItems.map((item) => <button key={item.id} className={page === item.id ? 'active' : ''} onClick={() => setPage(item.id)}><span>{item.icon}</span>{item.label}</button>)}</nav>
+      <button className={`global-user-link ${page === 'users' ? 'active' : ''}`} onClick={() => setPage('users')}><span>◎</span>Utenti</button>
+      <label className="season"><span className="live-dot" /> Stagione<select value={season} onChange={(event) => changeSeason(event, setSeason, setPage)}>{seasons.map((value) => <option key={value} value={value}>{value.replace('_', '/')}</option>)}</select></label>
+      <nav>{visibleNavItems.filter((item) => item.id !== 'users').map((item) => <button key={item.id} className={page === item.id ? 'active' : ''} onClick={() => setPage(item.id)}><span>{item.icon}</span>{item.label}</button>)}</nav>
       <div className="sidebar-foot">DATI LOCALI<br /><span>Importati dai file CSV</span></div>
     </aside>
     <main className="content">
-      <header className="topbar"><div className="mobile-brand"><span className="brand-mark">F</span> Fantapazz Stats</div><div className="top-season">{seasonLabel} <span>•</span> Lega Fantapazz</div><label className="mobile-season"><span>Stagione</span><select aria-label="Seleziona stagione" value={season} onChange={(event) => setSeason(event.target.value)}>{seasons.map((value) => <option key={value} value={value}>{value.replace('_', '/')}</option>)}</select></label><div className="avatar">FP</div></header>
+      <header className="topbar"><div className="mobile-brand"><span className="brand-mark">F</span> Fantapazz Stats</div><div className="top-season">{seasonLabel} <span>•</span> Lega Fantapazz</div><label className="mobile-season"><span>Stagione</span><select aria-label="Seleziona stagione" value={season} onChange={(event) => changeSeason(event, setSeason, setPage)}>{seasons.map((value) => <option key={value} value={value}>{value.replace('_', '/')}</option>)}</select></label><div className="avatar">FP</div></header>
       <section className="page-heading"><div><p className="eyebrow">PANORAMICA DELLA LEGA</p><h1>{current.label}</h1><p className="subheading">Classifica e statistiche della stagione {seasonLabel}</p></div><div className="data-badge"><span className="pulse" /> Dati aggiornati</div></section>
       {loading && <div className="state-card">Caricamento dati…</div>}
       {error && <div className="state-card error">{error}. Avvia l’app tramite <code>npm run dev</code> per servire i file locali.</div>}
@@ -151,7 +158,7 @@ function App() {
       {!loading && !error && page === 'champions' && <ChampionsRanking rows={data.champions} />}
       {!loading && !error && page === 'scorers' && <Ranking rows={data.scorers} type="scorers" />}
       {!loading && !error && page === 'users' && <UserStats history={seasonHistory} users={users} />}
-      {!loading && !error && page === 'rosters' && <Roster rows={data.rosters} teams={teams} />}
+      {!loading && !error && page === 'rosters' && <Roster rows={data.rosters} teams={teams} users={data.users} />}
     </main>
   </div>
 }
@@ -161,10 +168,9 @@ function Ranking({ rows, type }) {
   const isChampions = type === 'champions'
   const isScorers = type === 'scorers'
   const scoreLabel = isChampionship || isChampions ? 'Punti' : 'FantaPunti'
-  const scoreKey = isChampionship || isChampions ? 'Punti' : 'FantaPunti'
   const title = isChampionship ? 'Classifica campionato' : isChampions ? 'Classifica Champions' : isScorers ? 'Classifica capocannonieri' : 'Classifica fantapunti'
   const isLeague = isChampionship || isChampions
-  return <div className="panel"><div className="panel-toolbar"><div><h2>{title}</h2><p>{rows.length} squadre partecipanti</p></div><div className="count-pill">{rows.length} <span>squadre</span></div></div><div className="table-wrap"><table className={isLeague ? 'league-table' : 'compact-table'}><thead><tr><th>#</th><th>Squadra</th><th>Utente</th>{isLeague && <><th>PG</th><th>V</th><th>N</th><th>P</th><th>GF</th><th>GS</th></>}<th className="right">{scoreLabel}</th></tr></thead><tbody>{rows.map((row, index) => <tr key={`${row.Squadra}-${index}`}><td><Rank rank={index + 1} /></td><td className="team-name">{row.Squadra}</td><td className="owner">{row.Utente}</td>{isLeague && <><td>{row.Punti}</td><td>{row.Vittorie}</td><td>{row.Nulle}</td><td>{row.Sconfitte}</td><td>{row.GolFa}</td><td>{row.GolSu}</td></>}<td className="score">{numeric(row[scoreKey]).toLocaleString('it-IT', { minimumFractionDigits: String(row[scoreKey]).includes(',') ? 1 : 0 })}</td></tr>)}</tbody></table></div></div>
+  return <div className="panel"><div className="panel-toolbar"><div><h2>{title}</h2><p>{rows.length} squadre partecipanti</p></div><div className="count-pill">{rows.length} <span>squadre</span></div></div><div className="table-wrap"><table className={isLeague ? 'league-table' : 'compact-table'}><thead><tr><th>#</th><th>Squadra</th><th>Utente</th>{isLeague && <><th className="right">Punti</th><th>PG</th><th>V</th><th>N</th><th>P</th><th>GF</th><th>GS</th><th className="right">FantaPunti</th></>} {!isLeague && <th className="right">{scoreLabel}</th>}</tr></thead><tbody>{rows.map((row, index) => <tr key={`${row.Squadra}-${index}`}><td><Rank rank={index + 1} /></td><td className="team-name">{row.Squadra}</td><td className="owner">{row.Utente}</td>{isLeague && <><td className="score">{numeric(row.Punti).toLocaleString('it-IT')}</td><td>{row.PG || (numeric(row.Vittorie) + numeric(row.Nulle) + numeric(row.Sconfitte))}</td><td>{row.Vittorie}</td><td>{row.Nulle}</td><td>{row.Sconfitte}</td><td>{row.GolFa}</td><td>{row.GolSu}</td><td className="score">{numeric(row.FantaPunti).toLocaleString('it-IT', { minimumFractionDigits: String(row.FantaPunti).includes(',') ? 1 : 0 })}</td></>}{!isLeague && <td className="score">{numeric(row.FantaPunti).toLocaleString('it-IT', { minimumFractionDigits: String(row.FantaPunti).includes(',') ? 1 : 0 })}</td>}</tr>)}</tbody></table></div></div>
 }
 
 function ChampionsRanking({ rows }) {
@@ -201,16 +207,17 @@ function UserStats({ history, users }) {
 
 function Stat({ value, label }) { return <div className="stat-card"><strong>{value}</strong><span>{label}</span></div> }
 
-function Roster({ rows, teams }) {
+function Roster({ rows, teams, users }) {
   const [selected, setSelected] = useState(teams[0] || '')
   useEffect(() => setSelected(teams[0] || ''), [teams])
   const roster = rows.filter((row) => row.squadra === selected)
+  const owner = users.find((row) => normalizeTeam(row.Squadra) === normalizeTeam(selected))?.Utente || '—'
   const clubCounts = Object.entries(roster.reduce((counts, player) => {
     const club = String(player.club || '').trim() || 'Squadra non indicata'
     counts[club] = (counts[club] || 0) + 1
     return counts
   }, {})).sort(([, countA], [, countB]) => countB - countA)
-  return <div className="roster-grid"><div className="panel roster-selector"><div className="panel-toolbar"><div><h2>Seleziona una rosa</h2><p>Consulta i giocatori di ogni squadra</p></div></div><label>Squadra<select value={selected} onChange={(event) => setSelected(event.target.value)}>{teams.map((team) => <option key={team} value={team}>{team}</option>)}</select></label><div className="roster-summary"><span className="big-number">{roster.length}</span><span>giocatori<br />in rosa</span></div>{clubCounts.length > 0 && <div className="club-counts"><p>Giocatori per club</p>{clubCounts.map(([club, count]) => <div className="club-count" key={club}><span>{club}</span><strong>{count}</strong></div>)}</div>}</div><div className="panel roster-list"><div className="panel-toolbar"><div><h2>{selected || 'Rosa'}</h2><p>Rosa completa</p></div></div>{roster.length ? <div className="players">{roster.map((player, index) => { const role = String(player.ruolo).toLowerCase().slice(0, 3); return <div className={`player player-${role}`} key={`${player.giocatore}-${index}`}><span className={`role role-${role}`}>{player.ruolo || '—'}</span><span className="player-details"><span>{player.giocatore}</span>{player.club && <small>{player.club}</small>}</span>{player.quotazione && <strong>{player.quotazione}</strong>}</div> })}</div> : <p className="empty">Nessun giocatore trovato per questa squadra.</p>}</div></div>
+  return <div className="roster-grid"><div className="panel roster-selector"><div className="panel-toolbar"><div><h2>Seleziona una rosa</h2><p>Consulta i giocatori di ogni squadra</p></div></div><label>Squadra<select value={selected} onChange={(event) => setSelected(event.target.value)}>{teams.map((team) => <option key={team} value={team}>{team}</option>)}</select></label><div className="roster-owner"><span>Utente</span><strong>{owner}</strong></div><div className="roster-summary"><span className="big-number">{roster.length}</span><span>giocatori<br />in rosa</span></div>{clubCounts.length > 0 && <div className="club-counts"><p>Giocatori per club</p>{clubCounts.map(([club, count]) => <div className="club-count" key={club}><span>{club}</span><strong>{count}</strong></div>)}</div>}</div><div className="panel roster-list"><div className="panel-toolbar"><div><h2>{selected || 'Rosa'}</h2><p>Utente: {owner} · Rosa completa</p></div></div>{roster.length ? <div className="players">{roster.map((player, index) => { const role = String(player.ruolo).toLowerCase().slice(0, 3); return <div className={`player player-${role}`} key={`${player.giocatore}-${index}`}><span className={`role role-${role}`}>{player.ruolo || '—'}</span><span className="player-details"><span>{player.giocatore}</span>{player.club && <small>{player.club}</small>}</span>{player.quotazione && <strong>{player.quotazione}</strong>}</div> })}</div> : <p className="empty">Nessun giocatore trovato per questa squadra.</p>}</div></div>
 }
 
 createRoot(document.getElementById('root')).render(<App />)
