@@ -1,0 +1,19 @@
+﻿Stato;Giocatore;Ruolo;Voto;BonusMalus;CalciatoreId
+Titolare;Perin;P;7;imgBonus size-s imgBonus_2;369
+Titolare;Augello;D;6.5;;2087
+Titolare;Yoshida;D;6;;2182
+Titolare;Pezzella Ge.;D;5.5;;1644
+Titolare;Soriano;C;6.5;imgBonus size-s imgBonus_6;433
+Titolare;Jankto;C;6;;257
+Titolare;Kurtic;C;6;;272
+Titolare;Ricci M.;C;6.5;;2258
+Titolare;Ronaldo C.;A;6;;1775
+Titolare;Man;A;5.5;;2431
+Titolare;Lasagna;A;5;;612
+Riserva;Marchetti;P;;;302
+Riserva;Favilli;A;5.5;;1103
+Riserva;Caprari;A;6;;1185
+Riserva;Zaccagni;C;5.5;;748
+Riserva;Thorsby;C;6;;2036
+Riserva;Viola;C;7;;1573
+Riserva;Gagliolo;D;6;;594

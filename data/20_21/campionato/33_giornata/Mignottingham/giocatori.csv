@@ -1,0 +1,19 @@
+﻿Stato;Giocatore;Ruolo;Voto;BonusMalus;CalciatoreId
+Riserva;Mirante;P;;;555
+Titolare;De Ligt;D;6;imgBonus size-s imgBonus_6;2047
+Titolare;Mancini G.;D;4.5;;1549
+Titolare;Ansaldi;D;6;;1026
+Titolare;Maehle;D;6.5;imgBonus size-s imgBonus_9;2417
+Titolare;Pessina;C;6;;1508
+Titolare;Strootman;C;6.5;imgBonus size-s imgBonus_9;441
+Titolare;Pobega;C;5.5;;2291
+Titolare;Dybala;A;5.5;;185
+Titolare;Boga;A;6.5;;1840
+Titolare;Osimhen;A;7;imgBonus size-s imgBonus_1|imgBonus size-s imgBonus_6;2290
+Titolare;Skorupski;P;6.5;imgBonus size-s imgBonus_2|imgBonus size-s imgBonus_2|imgBonus size-s imgBonus_2|imgBonus size-s imgBonus_2|imgBonus size-s imgBonus_2;429
+Riserva;Bastoni S.;D;6;;2255
+Riserva;Zappa;D;6;;2325
+Riserva;Rugani;D;;;413
+Riserva;Mandragora;C;4.5;imgBonus size-s imgBonus_7;299
+Riserva;Bentancur;C;6.5;;1518
+Riserva;Lapadula;A;7;imgBonus size-s imgBonus_1;1264

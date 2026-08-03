@@ -1,9 +1,9 @@
-﻿Giornata;Data;Squadra;FantaPunti
-29;;Scarsenal;77.00
-29;;Mignottingham;76.00
-29;;A.C Ughina;75.00
-29;;Team Bubi;74.50
-29;;Hellas Madonna;72.00
-29;;Divano Kiev;69.50
-29;;Ajajax Brazorf;67.50
-29;;Bristol Rovers;61.00
+﻿Giornata;Data;Squadra;FantaPunti;ModificatoreDifesa;ModificatoreCentrocampo;ModificatoreAttacco
+29;;Scarsenal;77.00;;;
+29;;Mignottingham;76.00;;;
+29;;A.C Ughina;75.00;;;
+29;;Team Bubi;74.50;;;
+29;;Hellas Madonna;72.00;;;
+29;;Divano Kiev;69.50;;;
+29;;Ajajax Brazorf;67.50;+1;;-0.5
+29;;Bristol Rovers;61.00;;;-1.5

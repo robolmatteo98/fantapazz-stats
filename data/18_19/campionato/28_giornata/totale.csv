@@ -1,5 +1,5 @@
-﻿Giornata;Data;Casa;PuntiCasa;Risultato;Trasferta;PuntiTrasferta
-28;6 Apr 2019;SDP Longobarda;67;1 - 0;A.C. Chiappa Fregna;65
-28;6 Apr 2019;Beercellona;56.5;0 - 0;Rosicone;63
-28;6 Apr 2019;Paris Saint-Gennar;78;3 - 2;Scarsenal;72.5
-28;6 Apr 2019;Rubin kebab;73;2 - 3;A.C Ughina;78
+﻿Giornata;Data;Casa;PuntiCasa;Risultato;Trasferta;PuntiTrasferta;ModificatoreDifesaCasa;ModificatoreCentrocampoCasa;ModificatoreAttaccoCasa;ModificatoreDifesaTrasferta;ModificatoreCentrocampoTrasferta;ModificatoreAttaccoTrasferta
+28;6 Apr 2019;SDP Longobarda;67;1 - 0;A.C. Chiappa Fregna;65;;;;;;
+28;6 Apr 2019;Beercellona;56.5;0 - 0;Rosicone;63;;;;;;
+28;6 Apr 2019;Paris Saint-Gennar;78;3 - 2;Scarsenal;72.5;;;;;;
+28;6 Apr 2019;Rubin kebab;73;2 - 3;A.C Ughina;78;;;;;;

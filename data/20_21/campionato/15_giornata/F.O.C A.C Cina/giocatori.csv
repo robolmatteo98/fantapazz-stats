@@ -1,0 +1,19 @@
+﻿Stato;Giocatore;Ruolo;Voto;BonusMalus;CalciatoreId
+Titolare;Silvestri;P;6.5;imgBonus size-s imgBonus_10;1599
+Titolare;Hakimi;D;7;imgBonus size-s imgBonus_1;2237
+Titolare;Bastoni;D;6.5;imgBonus size-s imgBonus_9;1389
+Riserva;Cetin;D;;;2102
+Titolare;Dimarco;D;6;;599
+Titolare;Veloso;C;5.5;;1299
+Titolare;Candreva;C;5.5;;33
+Titolare;Pellegrini Lo.;C;6.5;;364
+Titolare;Berardi D.;A;5;;84
+Titolare;Simeone;A;5.5;;1343
+Titolare;Martinez L.;A;8;imgBonus size-s imgBonus_1|imgBonus size-s imgBonus_1|imgBonus size-s imgBonus_1|imgBonus size-s imgBonus_15;1747
+Riserva;Cragno;P;7;imgBonus size-s imgBonus_2|imgBonus size-s imgBonus_2|imgBonus size-s imgBonus_2|imgBonus size-s imgBonus_2;849
+Riserva;Chiellini;D;;;139
+Riserva;Ayhan;D;;;2288
+Titolare;Verdi;C;5;imgBonus size-s imgBonus_6;466
+Riserva;Tameze;C;6;;2180
+Riserva;Tonali;C;4.5;imgBonus size-s imgBonus_7;1996
+Riserva;Pavoletti;A;;;361

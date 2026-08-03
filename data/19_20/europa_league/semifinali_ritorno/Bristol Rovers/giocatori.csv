@@ -1,0 +1,19 @@
+﻿Stato;Giocatore;Ruolo;Voto;BonusMalus;CalciatoreId
+Titolare;Sepe;P;6;imgBonus size-s imgBonus_2|imgBonus size-s imgBonus_2;424
+Titolare;Pezzella Ge.;D;6;imgBonus size-s imgBonus_6;1644
+Titolare;Milenkovic;D;6;imgBonus size-s imgBonus_6;1552
+Titolare;Caldara;D;6;;1192
+Titolare;Chiesa;C;6.5;;1128
+Titolare;Luis Alberto;C;5;;1367
+Titolare;Pasalic;C;6.5;;1357
+Titolare;Ken Sema;C;6.5;imgBonus size-s imgBonus_6;2110
+Titolare;Petagna;A;6.5;;1193
+Titolare;Rebic;A;7;imgBonus size-s imgBonus_1;625
+Titolare;Lasagna;A;7;imgBonus size-s imgBonus_1;612
+Riserva;Musso;P;7;imgBonus size-s imgBonus_2|imgBonus size-s imgBonus_2|imgBonus size-s imgBonus_5;1794
+Riserva;Palomino;D;6;imgBonus size-s imgBonus_6;1531
+Riserva;Ibrahimovic;A;7;imgBonus size-s imgBonus_3|imgBonus size-s imgBonus_9;2152
+Riserva;Freuler;C;;;1091
+Riserva;De Roon;C;6;;670
+Riserva;Falco;C;6;;989
+Riserva;Castillejo;C;;;1863

@@ -1,5 +1,5 @@
-﻿Giornata;Data;Casa;PuntiCasa;Risultato;Trasferta;PuntiTrasferta
-11;14 Dic 2019;Team Bubi;71;1 - 1;Hellas Madonna;68.5
-11;14 Dic 2019;Scarsenal;65;0 - 0;Ajajax Brazorf;59
-11;14 Dic 2019;A.C Ughina;62.5;0 - 1;Bristol Rovers;70.5
-11;14 Dic 2019;Divano Kiev;80;3 - 2;Mignottingham;77.5
+﻿Giornata;Data;Casa;PuntiCasa;Risultato;Trasferta;PuntiTrasferta;ModificatoreDifesaCasa;ModificatoreCentrocampoCasa;ModificatoreAttaccoCasa;ModificatoreDifesaTrasferta;ModificatoreCentrocampoTrasferta;ModificatoreAttaccoTrasferta
+11;14 Dic 2019;Team Bubi;71;1 - 1;Hellas Madonna;68.5;;;;;;
+11;14 Dic 2019;Scarsenal;65;0 - 0;Ajajax Brazorf;59;+0.5;;;-0.5;;
+11;14 Dic 2019;A.C Ughina;62.5;0 - 1;Bristol Rovers;70.5;-0.5;;;;;
+11;14 Dic 2019;Divano Kiev;80;3 - 2;Mignottingham;77.5;;;;+1.5;;

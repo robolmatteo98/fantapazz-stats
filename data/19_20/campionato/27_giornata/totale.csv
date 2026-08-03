@@ -1,5 +1,5 @@
-﻿Giornata;Data;Casa;PuntiCasa;Risultato;Trasferta;PuntiTrasferta
-27;28 Lug 2020;A.C Ughina;84.5;4 - 1;Team Bubi;68.5
-27;28 Lug 2020;Hellas Madonna;69.5;1 - 4;Divano Kiev;85
-27;28 Lug 2020;Ajajax Brazorf;40.5;0 - 4;Bristol Rovers;88.5
-27;28 Lug 2020;Scarsenal;72.5;2 - 3;Mignottingham;83.5
+﻿Giornata;Data;Casa;PuntiCasa;Risultato;Trasferta;PuntiTrasferta;ModificatoreDifesaCasa;ModificatoreCentrocampoCasa;ModificatoreAttaccoCasa;ModificatoreDifesaTrasferta;ModificatoreCentrocampoTrasferta;ModificatoreAttaccoTrasferta
+27;28 Lug 2020;A.C Ughina;84.5;4 - 1;Team Bubi;68.5;;+0.5;;;;-1
+27;28 Lug 2020;Hellas Madonna;69.5;1 - 4;Divano Kiev;85;;;-1;;+1.5;
+27;28 Lug 2020;Ajajax Brazorf;40.5;0 - 4;Bristol Rovers;88.5;;;;;+2.5;
+27;28 Lug 2020;Scarsenal;72.5;2 - 3;Mignottingham;83.5;;;;+2;+1;

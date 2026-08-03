@@ -1,5 +1,5 @@
-﻿Giornata;Data;Casa;PuntiCasa;Risultato;Trasferta;PuntiTrasferta
-15;1 Feb 2020;Mignottingham;76.5;2 - 0;Bristol Rovers;62.5
-15;1 Feb 2020;A.C Ughina;75.5;2 - 3;Hellas Madonna;81
-15;1 Feb 2020;Divano Kiev;70;1 - 2;Scarsenal;72.5
-15;1 Feb 2020;Team Bubi;77;2 - 2;Ajajax Brazorf;75.5
+﻿Giornata;Data;Casa;PuntiCasa;Risultato;Trasferta;PuntiTrasferta;ModificatoreDifesaCasa;ModificatoreCentrocampoCasa;ModificatoreAttaccoCasa;ModificatoreDifesaTrasferta;ModificatoreCentrocampoTrasferta;ModificatoreAttaccoTrasferta
+15;1 Feb 2020;Mignottingham;76.5;2 - 0;Bristol Rovers;62.5;;;;;;
+15;1 Feb 2020;A.C Ughina;75.5;2 - 3;Hellas Madonna;81;;;;;;
+15;1 Feb 2020;Divano Kiev;70;1 - 2;Scarsenal;72.5;;;;;;
+15;1 Feb 2020;Team Bubi;77;2 - 2;Ajajax Brazorf;75.5;+1.5;;;;;

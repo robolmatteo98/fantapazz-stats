@@ -2,5 +2,13 @@ node_modules/
 dist/
 
 screen/*
+!screen/download_giornate.js
+!screen/download_campionato.js
+!screen/download_fantapunti.js
+!screen/download_champions.js
+!screen/download_europa_league.js
+!screen/download_coppa_italia.js
+!screen/download_19_20.sh
+!screen/download_20_21.sh
 
 .DS_Store

@@ -1,5 +1,5 @@
-﻿Giornata;Data;Casa;PuntiCasa;Risultato;Trasferta;PuntiTrasferta
-35;25 Mag 2019;A.C Ughina;73.5;2 - 6;Rubin kebab;98.5
-35;25 Mag 2019;Scarsenal;66;1 - 1;Paris Saint-Gennar;68.5
-35;25 Mag 2019;Rosicone;71.5;1 - 0;Beercellona;62.5
-35;25 Mag 2019;A.C. Chiappa Fregna;57;0 - 1;SDP Longobarda;68
+﻿Giornata;Data;Casa;PuntiCasa;Risultato;Trasferta;PuntiTrasferta;ModificatoreDifesaCasa;ModificatoreCentrocampoCasa;ModificatoreAttaccoCasa;ModificatoreDifesaTrasferta;ModificatoreCentrocampoTrasferta;ModificatoreAttaccoTrasferta
+35;25 Mag 2019;A.C Ughina;73.5;2 - 6;Rubin kebab;98.5;;;;;;
+35;25 Mag 2019;Scarsenal;66;1 - 1;Paris Saint-Gennar;68.5;;;;;;
+35;25 Mag 2019;Rosicone;71.5;1 - 0;Beercellona;62.5;;;;;;
+35;25 Mag 2019;A.C. Chiappa Fregna;57;0 - 1;SDP Longobarda;68;;;;;;

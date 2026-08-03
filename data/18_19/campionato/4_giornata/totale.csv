@@ -1,5 +1,5 @@
-﻿Giornata;Data;Casa;PuntiCasa;Risultato;Trasferta;PuntiTrasferta
-4;29 Set 2018;Paris Saint-Gennar;75.5;2 - 0;Rubin kebab;62.5
-4;29 Set 2018;SDP Longobarda;69;1 - 2;A.C Ughina;74
-4;29 Set 2018;Scarsenal;69.5;1 - 0;Rosicone;61.5
-4;29 Set 2018;A.C. Chiappa Fregna;83.5;3 - 0;Beercellona;60
+﻿Giornata;Data;Casa;PuntiCasa;Risultato;Trasferta;PuntiTrasferta;ModificatoreDifesaCasa;ModificatoreCentrocampoCasa;ModificatoreAttaccoCasa;ModificatoreDifesaTrasferta;ModificatoreCentrocampoTrasferta;ModificatoreAttaccoTrasferta
+4;29 Set 2018;Paris Saint-Gennar;75.5;2 - 0;Rubin kebab;62.5;;;;;;
+4;29 Set 2018;SDP Longobarda;69;1 - 2;A.C Ughina;74;;;;;;
+4;29 Set 2018;Scarsenal;69.5;1 - 0;Rosicone;61.5;;;;;;
+4;29 Set 2018;A.C. Chiappa Fregna;83.5;3 - 0;Beercellona;60;;;;;;

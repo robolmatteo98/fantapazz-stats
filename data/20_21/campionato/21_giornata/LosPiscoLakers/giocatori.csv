@@ -1,0 +1,19 @@
+﻿Stato;Giocatore;Ruolo;Voto;BonusMalus;CalciatoreId
+Titolare;Reina;P;6;imgBonus size-s imgBonus_10;551
+Titolare;Conti;D;5;imgBonus size-s imgBonus_6;730
+Titolare;Manolas;D;5;;300
+Titolare;Toloi;D;5;imgBonus size-s imgBonus_6;1013
+Titolare;Hernandez;D;7.5;imgBonus size-s imgBonus_9;2017
+Titolare;Pereyra;C;6.5;;367
+Titolare;Zajc;C;7;imgBonus size-s imgBonus_9;1439
+Titolare;Locatelli;C;6.5;imgBonus size-s imgBonus_6;1123
+Titolare;Belotti;A;6.5;imgBonus size-s imgBonus_1|imgBonus size-s imgBonus_4;79
+Titolare;Orsolini;A;6.5;imgBonus size-s imgBonus_1;1519
+Titolare;Gyasi;A;6.5;imgBonus size-s imgBonus_1|imgBonus size-s imgBonus_15;2266
+Riserva;Dragowski;P;7;imgBonus size-s imgBonus_2|imgBonus size-s imgBonus_2;1263
+Riserva;Vojvoda;D;;;2292
+Riserva;Marchizza;D;;;1087
+Riserva;Ionita;C;6.5;imgBonus size-s imgBonus_6;252
+Riserva;Rincon;C;6;;398
+Riserva;Simy;A;;;1281
+Riserva;Zaza;A;5.5;imgBonus size-s imgBonus_6;485
