@@ -1,3 +1,7 @@
 node_modules/
 dist/
+
+screen/*
+!screen/scarica-giornate.js
+
 .DS_Store

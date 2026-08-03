@@ -1,0 +1,19 @@
+﻿Stato;Giocatore;Ruolo;Voto;BonusMalus;CalciatoreId
+Titolare;Olsen;P;6;imgBonus size-s imgBonus_10;1814
+Titolare;Milenkovic;D;6;;1552
+Titolare;Bereszynski;D;6.5;imgBonus size-s imgBonus_6;1413
+Titolare;Alex Sandro;D;6;;993
+Titolare;Stulac;C;6.5;;1750
+Titolare;Ramirez;C;6.5;imgBonus size-s imgBonus_9;1630
+Titolare;Barella;C;6.5;;809
+Titolare;Mandzukic;A;6.5;imgBonus size-s imgBonus_6|imgBonus size-s imgBonus_9;531
+Titolare;Berardi;A;6;;84
+Titolare;Suso;A;7.5;imgBonus size-s imgBonus_9|imgBonus size-s imgBonus_9;443
+Titolare;Zaza;A;7;;485
+Riserva;Gomis A.;P;6.5;imgBonus size-s imgBonus_2|imgBonus size-s imgBonus_2;517
+Riserva;Miranda;D;4.5;imgBonus size-s imgBonus_6;489
+Riserva;Magnani;D;5.5;;1846
+Riserva;Emre Can;C;6;;1746
+Riserva;Lucas Leiva;C;6;;1602
+Riserva;Milik;A;;;1296
+Riserva;Stepinski;A;6;;1659

@@ -4,6 +4,8 @@ import * as XLSX from 'xlsx'
 import './styles.css'
 
 const dataFiles = import.meta.glob('../data/*/*', { eager: true, as: 'url' })
+const matchdayFiles = import.meta.glob('../data/*/campionato/*/*', { eager: true, as: 'url' })
+const bonusIcons = import.meta.glob('../icone/bonus_*.png', { eager: true, as: 'url' })
 const groupedData = Object.entries(dataFiles).reduce((result, [path, url]) => {
   const match = path.match(/data\/([^/]+)\/([^/]+)$/)
   if (!match) return result
@@ -14,10 +16,21 @@ const groupedData = Object.entries(dataFiles).reduce((result, [path, url]) => {
   return result
 }, {})
 const availableSeasons = Object.keys(groupedData).sort()
+const groupedMatchdays = Object.entries(matchdayFiles).reduce((result, [path, url]) => {
+  const match = path.match(/data\/([^/]+)\/campionato\/([^/]+)\/(.+)$/)
+  if (!match) return result
+  const [, season, day, relativePath] = match
+  result[season] ||= {}
+  result[season][day] ||= { total: '', teams: {} }
+  if (relativePath === 'totale.csv') result[season][day].total = url
+  else if (relativePath.endsWith('/giocatori.csv')) result[season][day].teams[relativePath.replace(/\/giocatori\.csv$/, '')] = url
+  return result
+}, {})
 
 const navItems = [
   { id: 'fantasy', label: 'Fantapunti', icon: '✦' },
   { id: 'championship', label: 'Campionato', icon: '⌁' },
+  { id: 'matchdays', label: 'Giornate', icon: '◷' },
   { id: 'champions', label: 'Champions', icon: '◆' },
   { id: 'scorers', label: 'Capocannonieri', icon: '⚽' },
   { id: 'users', label: 'Utenti', icon: '◎' },
@@ -142,7 +155,7 @@ function App() {
     return [...new Set(allUsers.filter(Boolean))].sort((a, b) => a.localeCompare(b, 'it'))
   }, [data.users, seasonHistory])
   const current = navItems.find((item) => item.id === page)
-  const visibleNavItems = navItems.filter((item) => (item.id !== 'championship' || data.championship.length) && (item.id !== 'champions' || data.champions.length))
+  const visibleNavItems = navItems.filter((item) => (item.id !== 'championship' || data.championship.length) && (item.id !== 'matchdays' || groupedMatchdays[season]) && (item.id !== 'champions' || data.champions.length))
   const seasonLabel = season.replace('_', '/')
 
   return <div className="app-shell">
@@ -160,6 +173,7 @@ function App() {
       {error && <div className="state-card error">{error}. Avvia l’app tramite <code>npm run dev</code> per servire i file locali.</div>}
       {!loading && !error && page === 'fantasy' && <Ranking rows={data.fantasy} type="fantasy" />}
       {!loading && !error && page === 'championship' && <Ranking rows={data.championship} type="championship" />}
+      {!loading && !error && page === 'matchdays' && <Matchdays days={groupedMatchdays[season] || {}} />}
       {!loading && !error && page === 'champions' && <ChampionsRanking rows={data.champions} />}
       {!loading && !error && page === 'scorers' && <Ranking rows={data.scorers} type="scorers" />}
       {!loading && !error && page === 'users' && <UserStats history={seasonHistory} users={users} />}
@@ -191,6 +205,60 @@ function ChampionsRanking({ rows }) {
 function Rank({ rank }) { return rank <= 3 ? <span className={`medal medal-${rank}`}>{rank}</span> : <span className="rank">{rank}</span> }
 function HistoryResult({ rank, value, prefix = '' }) { return <span className="history-result">{prefix}<Rank rank={rank} /><span>{value}</span></span> }
 
+function bonusIconUrl(code) {
+  const match = String(code).match(/imgBonus_(\d+)/i)
+  if (!match) return ''
+  const path = Object.keys(bonusIcons).find((value) => value.endsWith(`/bonus_${match[1]}.png`))
+  return path ? bonusIcons[path] : ''
+}
+
+function bonusCodes(value) {
+  return [...String(value || '').matchAll(/imgBonus_(\d+)/gi)].map((match) => match[1])
+}
+
+function voteClass(value) {
+  if (value === '') return 'vote-na'
+  const vote = numeric(value)
+  return vote > 6 ? 'vote-high' : vote < 6 ? 'vote-low' : 'vote-neutral'
+}
+
+function PlayerMatchList({ team, rows }) {
+  return <section className="match-team"><h3>{team}</h3><div className="match-players">{rows.length ? rows.map((player, index) => { const role = String(player.Ruolo || '').trim().toLowerCase().charAt(0); const roleClass = { p: 'por', d: 'dif', c: 'cen', a: 'att' }[role] || role; const codes = bonusCodes(player.BonusMalus); return <div className={`match-player ${player.Stato === 'Riserva' ? 'reserve' : ''}`} key={`${player.Giocatore}-${index}`}><span className={`role role-${roleClass}`}>{player.Ruolo || '—'}</span><span className="match-player-name">{player.Giocatore}<small>{player.Stato}</small></span><span className={`match-vote ${voteClass(String(player.Voto || '').trim())}`}>{player.Voto || '—'}</span>{codes.length > 0 && <span className="bonus-icons">{codes.map((code, bonusIndex) => { const src = bonusIconUrl(`imgBonus_${code}`); return src ? <img key={`${code}-${bonusIndex}`} src={src} alt={`Bonus ${code}`} title={`Bonus ${code}`} /> : <span key={`${code}-${bonusIndex}`} title={`Bonus ${code}`}>+{code}</span> })}</span>}</div> }) : <p className="empty">Nessun giocatore trovato.</p>}</div></section>
+}
+
+function Matchdays({ days }) {
+  const dayNames = Object.keys(days).sort((a, b) => Number.parseInt(a, 10) - Number.parseInt(b, 10))
+  const [selectedDay, setSelectedDay] = useState(dayNames[0] || '')
+  const [dayData, setDayData] = useState({ matches: [], players: {}, loading: false, error: '' })
+  useEffect(() => setSelectedDay(dayNames[0] || ''), [days])
+  useEffect(() => {
+    let cancelled = false
+    async function loadDay() {
+      if (!selectedDay || !days[selectedDay]?.total) return
+      setDayData((current) => ({ ...current, loading: true, error: '' }))
+      try {
+        const day = days[selectedDay]
+        const totalResponse = await fetch(day.total)
+        if (!totalResponse.ok) throw new Error('Impossibile leggere il totale della giornata')
+        const matches = parseCsv(await totalResponse.text())
+        const teams = [...new Set(matches.flatMap((match) => [match.Casa, match.Trasferta]).filter(Boolean))]
+        const playerEntries = await Promise.all(teams.map(async (team) => {
+          const url = day.teams[team]
+          if (!url) return [team, []]
+          const response = await fetch(url)
+          return [team, response.ok ? parseCsv(await response.text()) : []]
+        }))
+        if (!cancelled) setDayData({ matches, players: Object.fromEntries(playerEntries), loading: false, error: '' })
+      } catch (error) {
+        if (!cancelled) setDayData({ matches: [], players: {}, loading: false, error: error.message })
+      }
+    }
+    loadDay()
+    return () => { cancelled = true }
+  }, [days, selectedDay])
+  return <div className="matchdays-page"><div className="panel matchday-selector"><div className="panel-toolbar"><div><h2>Giornate di campionato</h2><p>Visualizza gli scontri e le formazioni della giornata</p></div></div><label>Seleziona giornata<select value={selectedDay} onChange={(event) => setSelectedDay(event.target.value)}>{dayNames.map((day) => <option key={day} value={day}>{day.replace('_', ' ')}</option>)}</select></label></div>{dayData.loading && <div className="state-card">Caricamento giornata…</div>}{dayData.error && <div className="state-card error">{dayData.error}</div>}{!dayData.loading && !dayData.error && <div className="matchday-list">{dayData.matches.map((match, index) => <article className="match-card" key={`${match.Casa}-${match.Trasferta}-${index}`}><div className="match-score"><div><strong>{match.Casa}</strong><span>{match.PuntiCasa}</span></div><b>{match.Risultato || '—'}</b><div><strong>{match.Trasferta}</strong><span>{match.PuntiTrasferta}</span></div></div><div className="match-teams"><PlayerMatchList team={match.Casa} rows={dayData.players[match.Casa] || []} /><PlayerMatchList team={match.Trasferta} rows={dayData.players[match.Trasferta] || []} /></div></article>)}</div>}</div>
+}
+
 function UserStats({ history, users }) {
   const [selected, setSelected] = useState(users[0] || '')
   useEffect(() => setSelected(users[0] || ''), [users])
@@ -201,19 +269,18 @@ function UserStats({ history, users }) {
     const champions = find(seasonData.champions)
     const scorer = find(seasonData.scorers)
     return { season: seasonData.season, fantasy, championship, champions, scorer }
-  }).filter(({ fantasy, championship, champions, scorer }) => fantasy || championship || champions || scorer)
+  }).filter(({ fantasy, championship, scorer }) => fantasy || championship || scorer)
   const rankOf = (rows, target) => {
     const rankedRows = target?.Girone ? rows.filter((row) => row.Girone === target.Girone) : rows
     const index = rankedRows.findIndex((row) => row.Utente === selected)
     return index < 0 ? '—' : index + 1
   }
-  const wins = records.flatMap(({ season, fantasy, championship, champions, scorer }) => [
+  const wins = records.flatMap(({ season, fantasy, championship, scorer }) => [
     championship && rankOf(history.find((item) => item.season === season).championship, championship) === 1 ? `Campionato ${season}` : '',
-    champions && rankOf(history.find((item) => item.season === season).champions, champions) === 1 ? `Champions girone ${champions.Girone} ${season}` : '',
     fantasy && rankOf(history.find((item) => item.season === season).fantasy, fantasy) === 1 ? `Fantapunti ${season}` : '',
     scorer && rankOf(history.find((item) => item.season === season).scorers, scorer) === 1 ? `Capocannonieri ${season}` : '',
   ]).filter(Boolean)
-  return <div className="user-page"><div className="panel user-selector"><div className="panel-toolbar"><div><h2>Statistiche utente</h2><p>Confronta i risultati di tutte le stagioni</p></div></div><label>Seleziona utente<select value={selected} onChange={(event) => setSelected(event.target.value)}>{users.map((user) => <option key={user} value={user}>{user}</option>)}</select></label></div><div className="stats-grid"><Stat value={records.length} label="stagioni" /><Stat value={wins.length} label="vittorie" /><Stat value={records.filter(({ championship }) => championship).length} label="campionati giocati" /></div><div className="panel"><div className="panel-toolbar"><div><h2>Riepilogo stagioni</h2><p>Posizione e punteggio per ogni classifica</p></div></div><div className="table-wrap"><table className="user-history-table"><thead><tr><th>Stagione</th><th>Squadra</th><th>Campionato</th><th>Champions</th><th>Fantapunti</th><th>Capocannonieri</th></tr></thead><tbody>{records.map(({ season, fantasy, championship, champions, scorer }) => { const seasonData = history.find((item) => item.season === season); const championshipRank = championship && rankOf(seasonData.championship, championship); const championsRank = champions && rankOf(seasonData.champions, champions); const fantasyRank = fantasy && rankOf(seasonData.fantasy, fantasy); const scorerRank = scorer && rankOf(seasonData.scorers, scorer); return <tr key={season}><td className="season-cell">{season.replace('_', '/')}</td><td className="team-name">{fantasy?.Squadra || championship?.Squadra || champions?.Squadra || scorer?.Squadra}</td><td>{championship ? <HistoryResult rank={championshipRank} value={`${championship.Punti} pt`} /> : '—'}</td><td>{champions ? <HistoryResult rank={championsRank} prefix={`G${champions.Girone} · `} value={`${champions.Punti} pt`} /> : '—'}</td><td>{fantasy ? <HistoryResult rank={fantasyRank} value={fantasy.FantaPunti} /> : '—'}</td><td>{scorer ? <HistoryResult rank={scorerRank} value={scorer.FantaPunti} /> : '—'}</td></tr> })}</tbody></table></div></div><div className="panel wins-panel"><div className="panel-toolbar"><div><h2>Vittorie</h2><p>Prime posizioni nelle classifiche disponibili</p></div></div>{wins.length ? <div className="win-list">{wins.map((win) => <span key={win}>{win}</span>)}</div> : <p className="empty">Nessuna vittoria registrata.</p>}</div></div>
+  return <div className="user-page"><div className="panel user-selector"><div className="panel-toolbar"><div><h2>Statistiche utente</h2><p>Confronta i risultati di tutte le stagioni</p></div></div><label>Seleziona utente<select value={selected} onChange={(event) => setSelected(event.target.value)}>{users.map((user) => <option key={user} value={user}>{user}</option>)}</select></label></div><div className="stats-grid"><Stat value={records.length} label="stagioni" /><Stat value={wins.length} label="vittorie" /><Stat value={records.filter(({ championship }) => championship).length} label="campionati giocati" /></div><div className="panel"><div className="panel-toolbar"><div><h2>Riepilogo stagioni</h2><p>Posizione e punteggio per ogni classifica</p></div></div><div className="table-wrap"><table className="user-history-table"><thead><tr><th>Stagione</th><th>Squadra</th><th>Campionato</th><th>Fantapunti</th><th>Capocannonieri</th></tr></thead><tbody>{records.map(({ season, fantasy, championship, scorer }) => { const seasonData = history.find((item) => item.season === season); const championshipRank = championship && rankOf(seasonData.championship, championship); const fantasyRank = fantasy && rankOf(seasonData.fantasy, fantasy); const scorerRank = scorer && rankOf(seasonData.scorers, scorer); return <tr key={season}><td className="season-cell">{season.replace('_', '/')}</td><td className="team-name">{fantasy?.Squadra || championship?.Squadra || scorer?.Squadra}</td><td>{championship ? <HistoryResult rank={championshipRank} value={`${championship.Punti} pt`} /> : '—'}</td><td>{fantasy ? <HistoryResult rank={fantasyRank} value={fantasy.FantaPunti} /> : '—'}</td><td>{scorer ? <HistoryResult rank={scorerRank} value={scorer.FantaPunti} /> : '—'}</td></tr> })}</tbody></table></div></div><div className="panel wins-panel"><div className="panel-toolbar"><div><h2>Vittorie</h2><p>Prime posizioni nelle classifiche disponibili</p></div></div>{wins.length ? <div className="win-list">{wins.map((win) => <span key={win}>{win}</span>)}</div> : <p className="empty">Nessuna vittoria registrata.</p>}</div></div>
 }
 
 function Stat({ value, label }) { return <div className="stat-card"><strong>{value}</strong><span>{label}</span></div> }
