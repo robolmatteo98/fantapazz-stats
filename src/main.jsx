@@ -4,7 +4,7 @@ import * as XLSX from 'xlsx'
 import './styles.css'
 
 const dataFiles = import.meta.glob('../data/*/*', { eager: true, as: 'url' })
-const matchdayFiles = import.meta.glob('../data/*/campionato/**/*', { eager: true, as: 'url' })
+const matchdayFiles = import.meta.glob('../data/*/*/**/*', { eager: true, as: 'url' })
 const bonusIcons = import.meta.glob('../icone/bonus_*.png', { eager: true, as: 'url' })
 const groupedData = Object.entries(dataFiles).reduce((result, [path, url]) => {
   const match = path.match(/data\/([^/]+)\/([^/]+)$/)
@@ -17,13 +17,14 @@ const groupedData = Object.entries(dataFiles).reduce((result, [path, url]) => {
 }, {})
 const availableSeasons = Object.keys(groupedData).sort()
 const groupedMatchdays = Object.entries(matchdayFiles).reduce((result, [path, url]) => {
-  const match = path.match(/data\/([^/]+)\/campionato\/([^/]+)\/(.+)$/)
+  const match = path.match(/data\/([^/]+)\/(campionato|fantapunti)\/([^/]+)\/(.+)$/)
   if (!match) return result
-  const [, season, day, relativePath] = match
+  const [, season, competition, day, relativePath] = match
   result[season] ||= {}
-  result[season][day] ||= { total: '', teams: {} }
-  if (relativePath === 'totale.csv') result[season][day].total = url
-  else if (relativePath.endsWith('/giocatori.csv')) result[season][day].teams[relativePath.replace(/\/giocatori\.csv$/, '')] = url
+  result[season][competition] ||= {}
+  result[season][competition][day] ||= { total: '', teams: {} }
+  if (relativePath === 'totale.csv') result[season][competition][day].total = url
+  else if (relativePath.endsWith('/giocatori.csv')) result[season][competition][day].teams[relativePath.replace(/\/giocatori\.csv$/, '')] = url
   return result
 }, {})
 
@@ -85,8 +86,18 @@ function changeSeason(event, setSeason, setPage) {
 }
 
 function withUsers(rows, users) {
-  const owners = new Map(users.map((row) => [normalizeTeam(row.Squadra), row.Utente || '—']))
-  return rows.map((row) => ({ ...row, Utente: owners.get(normalizeTeam(row.Squadra)) || '—' }))
+  const owners = new Map()
+  for (const row of users) {
+    const team = normalizeTeam(row.Squadra)
+    const user = String(row.Utente || '').trim()
+    if (!team || !user) continue
+    if (!owners.has(team)) owners.set(team, [])
+    if (!owners.get(team).includes(user)) owners.get(team).push(user)
+  }
+  return rows.map((row) => {
+    const teamOwners = owners.get(normalizeTeam(row.Squadra)) || []
+    return { ...row, Utente: teamOwners.join(' / ') || '—', Utenti: teamOwners }
+  })
 }
 
 async function fetchSeasonSummary(season) {
@@ -113,6 +124,7 @@ async function fetchSeasonSummary(season) {
 
 function App() {
   const [page, setPage] = useState('championship')
+  const [expandedCompetitions, setExpandedCompetitions] = useState({ championship: true, fantasy: false })
   const [season, setSeason] = useState(availableSeasons[availableSeasons.length - 1] || '')
   const seasons = availableSeasons
   const [data, setData] = useState({ fantasy: [], championship: [], champions: [], scorers: [], users: [], rosters: [] })
@@ -177,7 +189,9 @@ function App() {
     return [...new Set(allUsers.filter(Boolean))].sort((a, b) => a.localeCompare(b, 'it'))
   }, [data.users, seasonHistory])
   const current = navItems.find((item) => item.id === page)
-  const visibleNavItems = navItems.filter((item) => (item.id !== 'championship' || data.championship.length) && (item.id !== 'matchdays' || groupedMatchdays[season]) && (item.id !== 'champions' || data.champions.length))
+  const matchdayData = groupedMatchdays[season] || {}
+  const visibleNavItems = navItems.filter((item) => (item.id !== 'championship' || data.championship.length) && (item.id !== 'champions' || data.champions.length))
+  const pageLabel = page === 'matchdays-campionato' ? 'Giornate di campionato' : page === 'matchdays-fantapunti' ? 'Giornate di Fantapunti' : current?.label || 'Fantapunti'
   const seasonLabel = season.replace('_', '/')
 
   return <div className="app-shell">
@@ -185,17 +199,18 @@ function App() {
       <div className="brand"><span className="brand-mark">F</span><span>Fantapazz<br /><small>STATS</small></span></div>
       <button className={`global-user-link ${page === 'users' ? 'active' : ''}`} onClick={() => setPage('users')}><span>◎</span>Utenti</button>
       <label className="season"><span className="live-dot" /> Stagione<select value={season} onChange={(event) => changeSeason(event, setSeason, setPage)}>{seasons.map((value) => <option key={value} value={value}>{value.replace('_', '/')}</option>)}</select></label>
-      <nav>{visibleNavItems.filter((item) => item.id !== 'users').map((item) => <button key={item.id} className={page === item.id ? 'active' : ''} onClick={() => setPage(item.id)}><span>{item.icon}</span>{item.label}</button>)}</nav>
+      <nav>{visibleNavItems.filter((item) => item.id !== 'users').map((item) => { const hasMatchdaySubmenu = (item.id === 'championship' || item.id === 'fantasy') && matchdayData[item.id === 'championship' ? 'campionato' : 'fantapunti']; const submenuPage = item.id === 'championship' ? 'matchdays-campionato' : 'matchdays-fantapunti'; const isSubmenuActive = page === submenuPage; return <React.Fragment key={item.id}><button className={page === item.id || isSubmenuActive ? 'active' : ''} onClick={() => { setPage(item.id); if (hasMatchdaySubmenu) setExpandedCompetitions((current) => ({ ...current, [item.id]: !current[item.id] })) }}><span>{item.icon}</span>{item.label}</button>{hasMatchdaySubmenu && expandedCompetitions[item.id] && <button className={`nav-subitem ${isSubmenuActive ? 'active' : ''}`} onClick={() => setPage(submenuPage)}><span>◷</span>Giornate</button>}</React.Fragment> })}</nav>
       <div className="sidebar-foot">DATI LOCALI<br /><span>Importati dai file CSV</span></div>
     </aside>
     <main className="content">
       <header className="topbar"><div className="mobile-brand"><span className="brand-mark">F</span> Fantapazz Stats</div><div className="top-season">{seasonLabel} <span>•</span> Lega Fantapazz</div><label className="mobile-season"><span>Stagione</span><select aria-label="Seleziona stagione" value={season} onChange={(event) => changeSeason(event, setSeason, setPage)}>{seasons.map((value) => <option key={value} value={value}>{value.replace('_', '/')}</option>)}</select></label><div className="avatar">FP</div></header>
-      <section className="page-heading"><div><p className="eyebrow">PANORAMICA DELLA LEGA</p><h1>{current.label}</h1><p className="subheading">Classifica e statistiche della stagione {seasonLabel}</p></div><div className="data-badge"><span className="pulse" /> Dati aggiornati</div></section>
+      <section className="page-heading"><div><p className="eyebrow">PANORAMICA DELLA LEGA</p><h1>{pageLabel}</h1><p className="subheading">Classifica e statistiche della stagione {seasonLabel}</p></div><div className="data-badge"><span className="pulse" /> Dati aggiornati</div></section>
       {loading && <div className="state-card">Caricamento dati…</div>}
       {error && <div className="state-card error">{error}. Avvia l’app tramite <code>npm run dev</code> per servire i file locali.</div>}
       {!loading && !error && page === 'fantasy' && <Ranking rows={data.fantasy} type="fantasy" />}
       {!loading && !error && page === 'championship' && <Ranking rows={data.championship} type="championship" />}
-      {!loading && !error && page === 'matchdays' && <Matchdays days={groupedMatchdays[season] || {}} />}
+      {!loading && !error && page === 'matchdays-campionato' && <Matchdays days={matchdayData.campionato || {}} competition="campionato" />}
+      {!loading && !error && page === 'matchdays-fantapunti' && <Matchdays days={matchdayData.fantapunti || {}} competition="fantapunti" />}
       {!loading && !error && page === 'champions' && <ChampionsRanking rows={data.champions} />}
       {!loading && !error && page === 'scorers' && <Ranking rows={data.scorers} type="scorers" />}
       {!loading && !error && page === 'users' && <UserStats history={seasonHistory} users={users} />}
@@ -245,10 +260,11 @@ function voteClass(value) {
 }
 
 function PlayerMatchList({ team, rows, side }) {
-  return <section className={`match-team match-team-${side}`}><h3>{team}</h3><div className="match-players">{rows.length ? rows.map((player, index) => { const role = String(player.Ruolo || '').trim().toLowerCase().charAt(0); const roleClass = { p: 'por', d: 'dif', c: 'cen', a: 'att' }[role] || role; const codes = bonusCodes(player.BonusMalus); const roleElement = <span className={`role role-${roleClass}`}>{player.Ruolo || '—'}</span>; const nameElement = <span className="match-player-name">{player.Giocatore}</span>; const voteElement = <span className={`match-vote ${voteClass(String(player.Voto || '').trim())}`}>{player.Voto || '—'}</span>; const bonusElement = codes.length > 0 && <span className="bonus-icons">{codes.map((code, bonusIndex) => { const src = bonusIconUrl(`imgBonus_${code}`); return src ? <img key={`${code}-${bonusIndex}`} src={src} alt={`Bonus ${code}`} title={`Bonus ${code}`} /> : <span key={`${code}-${bonusIndex}`} title={`Bonus ${code}`}>+{code}</span> })}</span>; return <div className={`match-player ${player.Stato === 'Riserva' ? 'reserve' : ''}`} key={`${player.Giocatore}-${index}`}>{side === 'home' ? <>{roleElement}{nameElement}{bonusElement}{voteElement}</> : <>{voteElement}{bonusElement}{nameElement}{roleElement}</>}</div> }) : <p className="empty">Nessun giocatore trovato.</p>}</div></section>
+  return <section className={`match-team match-team-${side}`}><h3>{team}</h3><div className="match-players">{rows.length ? rows.map((player, index) => { const role = String(player.Ruolo || '').trim().toLowerCase().charAt(0); const roleClass = { p: 'por', d: 'dif', c: 'cen', a: 'att' }[role] || role; const codes = bonusCodes(player.BonusMalus); const roleElement = <span className={`role role-${roleClass}`}>{player.Ruolo || '—'}</span>; const nameElement = <span className="match-player-name">{player.Giocatore}</span>; const voteElement = <span className={`match-vote ${voteClass(String(player.Voto || '').trim())}`}>{player.Voto || '—'}</span>; const bonusElement = <span className={`bonus-icons ${codes.length === 0 ? 'bonus-icons-empty' : ''}`}>{codes.map((code, bonusIndex) => { const src = bonusIconUrl(`imgBonus_${code}`); return src ? <img key={`${code}-${bonusIndex}`} src={src} alt={`Bonus ${code}`} title={`Bonus ${code}`} /> : <span key={`${code}-${bonusIndex}`} title={`Bonus ${code}`}>+{code}</span> })}</span>; return <div className={`match-player ${player.Stato === 'Riserva' ? 'reserve' : ''}`} key={`${player.Giocatore}-${index}`}>{side === 'home' ? <>{roleElement}{nameElement}{bonusElement}{voteElement}</> : <>{voteElement}{bonusElement}{nameElement}{roleElement}</>}</div> }) : <p className="empty">Nessun giocatore trovato.</p>}</div></section>
 }
 
-function Matchdays({ days }) {
+function Matchdays({ days, competition }) {
+  const isFantasy = competition === 'fantapunti'
   const dayNames = Object.keys(days).sort((a, b) => Number.parseInt(a, 10) - Number.parseInt(b, 10))
   const [selectedDay, setSelectedDay] = useState(dayNames[0] || '')
   const [dayData, setDayData] = useState({ matches: [], players: {}, loading: false, error: '' })
@@ -263,7 +279,7 @@ function Matchdays({ days }) {
         const totalResponse = await fetch(day.total)
         if (!totalResponse.ok) throw new Error('Impossibile leggere il totale della giornata')
         const matches = parseCsv(await totalResponse.text())
-        const teams = [...new Set(matches.flatMap((match) => [match.Casa, match.Trasferta]).filter(Boolean))]
+        const teams = [...new Set(isFantasy ? matches.map((match) => match.Squadra).filter(Boolean) : matches.flatMap((match) => [match.Casa, match.Trasferta]).filter(Boolean))]
         const playerEntries = await Promise.all(teams.map(async (team) => {
           const url = day.teams[team]
           if (!url) return [team, []]
@@ -277,15 +293,16 @@ function Matchdays({ days }) {
     }
     loadDay()
     return () => { cancelled = true }
-  }, [days, selectedDay])
-  return <div className="matchdays-page"><div className="panel matchday-selector"><div className="panel-toolbar"><div><h2>Giornate di campionato</h2><p>Visualizza gli scontri e le formazioni della giornata</p></div></div><label>Seleziona giornata<select value={selectedDay} onChange={(event) => setSelectedDay(event.target.value)}>{dayNames.map((day) => <option key={day} value={day}>{day.replace('_', ' ')}</option>)}</select></label></div>{dayData.loading && <div className="state-card">Caricamento giornata…</div>}{dayData.error && <div className="state-card error">{dayData.error}</div>}{!dayData.loading && !dayData.error && <div className="matchday-list">{dayData.matches.map((match, index) => <article className="match-card" key={`${match.Casa}-${match.Trasferta}-${index}`}><div className="match-score"><div><strong>{match.Casa}</strong></div><div className="match-score-result"><b>{match.Risultato || '—'}</b><span>{match.PuntiCasa} - {match.PuntiTrasferta}</span></div><div><strong>{match.Trasferta}</strong></div></div><div className="match-teams"><PlayerMatchList team={match.Casa} side="home" rows={dayData.players[match.Casa] || []} /><PlayerMatchList team={match.Trasferta} side="away" rows={dayData.players[match.Trasferta] || []} /></div></article>)}</div>}</div>
+  }, [days, isFantasy, selectedDay])
+  const title = isFantasy ? 'Giornate di Fantapunti' : 'Giornate di campionato'
+  return <div className="matchdays-page"><div className="panel matchday-selector"><div className="panel-toolbar"><div><h2>{title}</h2><p>Visualizza i punteggi e le formazioni della giornata</p></div></div><label>Seleziona giornata<select value={selectedDay} onChange={(event) => setSelectedDay(event.target.value)}>{dayNames.map((day) => <option key={day} value={day}>{day.replace('_', ' ')}</option>)}</select></label></div>{dayData.loading && <div className="state-card">Caricamento giornata…</div>}{dayData.error && <div className="state-card error">{dayData.error}</div>}{!dayData.loading && !dayData.error && (isFantasy ? <div className="fantasy-matchday-list">{dayData.matches.map((match, index) => <article className="fantasy-day-card" key={`${match.Squadra}-${index}`}><div className="fantasy-day-score"><strong>{match.Squadra}</strong><b>{match.FantaPunti}</b></div><PlayerMatchList team={match.Squadra} side="home" rows={dayData.players[match.Squadra] || []} /></article>)}</div> : <div className="matchday-list">{dayData.matches.map((match, index) => <article className="match-card" key={`${match.Casa}-${match.Trasferta}-${index}`}><div className="match-score"><div><strong>{match.Casa}</strong></div><div className="match-score-result"><b>{match.Risultato || '—'}</b><span>{match.PuntiCasa} - {match.PuntiTrasferta}</span></div><div><strong>{match.Trasferta}</strong></div></div><div className="match-teams"><PlayerMatchList team={match.Casa} side="home" rows={dayData.players[match.Casa] || []} /><PlayerMatchList team={match.Trasferta} side="away" rows={dayData.players[match.Trasferta] || []} /></div></article>)}</div>)}</div>
 }
 
 function UserStats({ history, users }) {
   const [selected, setSelected] = useState(users[0] || '')
   useEffect(() => setSelected(users[0] || ''), [users])
   const records = history.map((seasonData) => {
-    const find = (rows) => rows.find((row) => row.Utente === selected)
+    const find = (rows) => rows.find((row) => row.Utenti?.includes(selected) || row.Utente === selected)
     const fantasy = find(seasonData.fantasy)
     const championship = find(seasonData.championship)
     const champions = find(seasonData.champions)
@@ -294,7 +311,7 @@ function UserStats({ history, users }) {
   }).filter(({ fantasy, championship, scorer }) => fantasy || championship || scorer)
   const rankOf = (rows, target) => {
     const rankedRows = target?.Girone ? rows.filter((row) => row.Girone === target.Girone) : rows
-    const index = rankedRows.findIndex((row) => row.Utente === selected)
+    const index = rankedRows.findIndex((row) => row.Utenti?.includes(selected) || row.Utente === selected)
     return index < 0 ? '—' : index + 1
   }
   const wins = records.flatMap(({ season, fantasy, championship, scorer }) => [
@@ -311,7 +328,7 @@ function Roster({ rows, teams, users }) {
   const [selected, setSelected] = useState(teams[0] || '')
   useEffect(() => setSelected(teams[0] || ''), [teams])
   const roster = rows.filter((row) => row.squadra === selected)
-  const owner = users.find((row) => normalizeTeam(row.Squadra) === normalizeTeam(selected))?.Utente || '—'
+  const owner = [...new Set(users.filter((row) => normalizeTeam(row.Squadra) === normalizeTeam(selected)).map((row) => String(row.Utente || '').trim()).filter(Boolean))].join(' / ') || '—'
   const maxQuotation = Math.max(...roster.map((player) => numeric(player.quotazione)), 0)
   const clubCounts = Object.entries(roster.reduce((counts, player) => {
     const club = String(player.club || '').trim() || 'Squadra non indicata'
