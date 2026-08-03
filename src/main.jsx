@@ -4,7 +4,7 @@ import * as XLSX from 'xlsx'
 import './styles.css'
 
 const dataFiles = import.meta.glob('../data/*/*', { eager: true, as: 'url' })
-const matchdayFiles = import.meta.glob('../data/*/campionato/*/*', { eager: true, as: 'url' })
+const matchdayFiles = import.meta.glob('../data/*/campionato/**/*', { eager: true, as: 'url' })
 const bonusIcons = import.meta.glob('../icone/bonus_*.png', { eager: true, as: 'url' })
 const groupedData = Object.entries(dataFiles).reduce((result, [path, url]) => {
   const match = path.match(/data\/([^/]+)\/([^/]+)$/)
@@ -39,7 +39,29 @@ const navItems = [
 
 function parseCsv(text) {
   const lines = text.replace(/^\uFEFF/, '').trim().split(/\r?\n/)
-  const split = (line) => line.match(/(?:"([^"]*)")|([^;]+)/g)?.map((cell) => cell.replace(/^"|"$/g, '').trim()) || []
+  const split = (line) => {
+    const cells = []
+    let cell = ''
+    let quoted = false
+    for (let index = 0; index < line.length; index += 1) {
+      const character = line[index]
+      if (character === '"') {
+        if (quoted && line[index + 1] === '"') {
+          cell += '"'
+          index += 1
+        } else {
+          quoted = !quoted
+        }
+      } else if (character === ';' && !quoted) {
+        cells.push(cell.trim())
+        cell = ''
+      } else {
+        cell += character
+      }
+    }
+    cells.push(cell.trim())
+    return cells
+  }
   const headers = split(lines[0])
   return lines.slice(1).filter(Boolean).map((line) => Object.fromEntries(split(line).map((value, i) => [headers[i], value])))
 }
@@ -256,7 +278,7 @@ function Matchdays({ days }) {
     loadDay()
     return () => { cancelled = true }
   }, [days, selectedDay])
-  return <div className="matchdays-page"><div className="panel matchday-selector"><div className="panel-toolbar"><div><h2>Giornate di campionato</h2><p>Visualizza gli scontri e le formazioni della giornata</p></div></div><label>Seleziona giornata<select value={selectedDay} onChange={(event) => setSelectedDay(event.target.value)}>{dayNames.map((day) => <option key={day} value={day}>{day.replace('_', ' ')}</option>)}</select></label></div>{dayData.loading && <div className="state-card">Caricamento giornata…</div>}{dayData.error && <div className="state-card error">{dayData.error}</div>}{!dayData.loading && !dayData.error && <div className="matchday-list">{dayData.matches.map((match, index) => <article className="match-card" key={`${match.Casa}-${match.Trasferta}-${index}`}><div className="match-score"><div><strong>{match.Casa}</strong><span>{match.PuntiCasa}</span></div><b>{match.Risultato || '—'}</b><div><strong>{match.Trasferta}</strong><span>{match.PuntiTrasferta}</span></div></div><div className="match-teams"><PlayerMatchList team={match.Casa} rows={dayData.players[match.Casa] || []} /><PlayerMatchList team={match.Trasferta} rows={dayData.players[match.Trasferta] || []} /></div></article>)}</div>}</div>
+  return <div className="matchdays-page"><div className="panel matchday-selector"><div className="panel-toolbar"><div><h2>Giornate di campionato</h2><p>Visualizza gli scontri e le formazioni della giornata</p></div></div><label>Seleziona giornata<select value={selectedDay} onChange={(event) => setSelectedDay(event.target.value)}>{dayNames.map((day) => <option key={day} value={day}>{day.replace('_', ' ')}</option>)}</select></label></div>{dayData.loading && <div className="state-card">Caricamento giornata…</div>}{dayData.error && <div className="state-card error">{dayData.error}</div>}{!dayData.loading && !dayData.error && <div className="matchday-list">{dayData.matches.map((match, index) => <article className="match-card" key={`${match.Casa}-${match.Trasferta}-${index}`}><div className="match-score"><div><strong>{match.Casa}</strong></div><div className="match-score-result"><b>{match.Risultato || '—'}</b><span>Fantapunti: {match.PuntiCasa} - {match.PuntiTrasferta}</span></div><div><strong>{match.Trasferta}</strong></div></div><div className="match-teams"><PlayerMatchList team={match.Casa} rows={dayData.players[match.Casa] || []} /><PlayerMatchList team={match.Trasferta} rows={dayData.players[match.Trasferta] || []} /></div></article>)}</div>}</div>
 }
 
 function UserStats({ history, users }) {
