@@ -1,0 +1,19 @@
+﻿Stato;Giocatore;Ruolo;Voto;BonusMalus;CalciatoreId
+Titolare;Szczesny;P;6;imgBonus size-s imgBonus_10;720
+Titolare;Molina;D;7.5;imgBonus size-s imgBonus_1|imgBonus size-s imgBonus_15;2240
+Titolare;De Silvestri;D;5.5;imgBonus size-s imgBonus_6;163
+Titolare;Luiz Felipe;D;6.5;;1628
+Titolare;Bastoni;D;5.5;;1389
+Titolare;Parisi;D;6.5;imgBonus size-s imgBonus_6;2492
+Titolare;Svanberg;C;6;;1802
+Titolare;Maggiore;C;6;;2260
+Titolare;Brozovic;C;6.5;;113
+Titolare;Immobile;A;7;imgBonus size-s imgBonus_1;1084
+Titolare;Leao;A;5.5;;2089
+Riserva;Sirigu;P;6;imgBonus size-s imgBonus_10;1522
+Riserva;Ola Aina;D;;;1859
+Riserva;Ansaldi;D;;;1026
+Riserva;Pereyra;C;;;367
+Riserva;Diaz;C;7;imgBonus size-s imgBonus_6;2319
+Riserva;Busio;C;6;imgBonus size-s imgBonus_6;2544
+Riserva;Ilic;C;5.5;;2326

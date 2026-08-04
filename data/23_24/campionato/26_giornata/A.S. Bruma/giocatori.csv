@@ -1,0 +1,19 @@
+﻿Stato;Giocatore;Ruolo;Voto;BonusMalus;CalciatoreId
+Titolare;Maignan;P;6.25;imgBonus size-s imgBonus_2;2498
+Titolare;Hernandez;D;6.75;imgBonus size-s imgBonus_1|imgBonus size-s imgBonus_6;2017
+Titolare;Luperto;D;5.75;imgBonus size-s imgBonus_6;682
+Titolare;Pavard;D;6;imgBonus size-s imgBonus_6;3206
+Titolare;Zaccagni;C;6.75;imgBonus size-s imgBonus_1;748
+Titolare;Cambiaghi;C;6.25;;1975
+Titolare;Calhanoglu;C;5.5;;1507
+Titolare;Locatelli;C;5;;1123
+Titolare;Mota;A;6;;1696
+Titolare;Leao;A;6;;2089
+Titolare;Castellanos;A;7.5;imgBonus size-s imgBonus_1|imgBonus size-s imgBonus_1|imgBonus size-s imgBonus_6|imgBonus size-s imgBonus_15;3100
+Riserva;Sportiello;P;;;435
+Riserva;Henrique;C;5.75;;2545
+Riserva;Cancellieri;C;;;2387
+Riserva;Tchaouna;A;6.5;;3207
+Riserva;Thauvin;A;5.5;;2911
+Riserva;Romagnoli A.;D;6;;404
+Riserva;Pongracic;D;5.5;imgBonus size-s imgBonus_6;2846

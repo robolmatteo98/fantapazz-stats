@@ -1,5 +1,5 @@
-﻿Giornata;Data;Casa;PuntiCasa;Risultato;Trasferta;PuntiTrasferta
-1;3 Gen 2021;Quack Quack Team;81;3 - 0;Scarsenal;65.5
-1;3 Gen 2021;Mignottingham;74.5;2 - 3;A.S. Temio;81
-1;3 Gen 2021;Birrareal;73.5;2 - 3;No Good Team;83
-1;3 Gen 2021;Tettenham hotsbur;73.5;2 - 1;LosPiscoLakers;71.5
+﻿Giornata;Data;Casa;PuntiCasa;Risultato;Trasferta;PuntiTrasferta;ModificatoreDifesaCasa;ModificatoreCentrocampoCasa;ModificatoreAttaccoCasa;ModificatoreDifesaTrasferta;ModificatoreCentrocampoTrasferta;ModificatoreAttaccoTrasferta
+1;3 Gen 2021;Quack Quack Team;81;3 - 0;Scarsenal;65.5;+1.5;+1.5;;;;-1
+1;3 Gen 2021;Mignottingham;74.5;2 - 3;A.S. Temio;81;+1;+0.5;;;;
+1;3 Gen 2021;Birrareal;73.5;2 - 3;No Good Team;83;;;;+1;+1;
+1;3 Gen 2021;Tettenham hotsbur;73.5;2 - 1;LosPiscoLakers;71.5;+0.5;;-1;;+1;-1

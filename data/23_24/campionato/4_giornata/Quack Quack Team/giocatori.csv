@@ -1,0 +1,19 @@
+﻿Stato;Giocatore;Ruolo;Voto;BonusMalus;CalciatoreId
+Titolare;Terracciano;P;6;imgBonus size-s imgBonus_10;1821
+Titolare;Dumfries;D;6.5;;2551
+Titolare;Beukema;D;5.75;;3056
+Titolare;Caldirola;D;6.25;imgBonus size-s imgBonus_9;2244
+Titolare;Parisi;D;6;;2492
+Titolare;Baldanzi;C;6.25;;2599
+Titolare;Zielinski;C;6.25;imgBonus size-s imgBonus_9;486
+Titolare;Cristante;C;6.5;;1080
+Titolare;Bonaventura;C;6.25;;101
+Titolare;Pellegrini Lo.;C;6.75;imgBonus size-s imgBonus_1;364
+Titolare;Dybala;A;7;imgBonus size-s imgBonus_9|imgBonus size-s imgBonus_9;185
+Riserva;Carnesecchi;P;;;2299
+Riserva;Elmas;C;;;2085
+Riserva;Aouar;C;;;3081
+Riserva;Casale;D;5;;2070
+Riserva;Walace;C;5.25;;2097
+Riserva;Immobile;A;5;;1084
+Riserva;Musso;P;6.5;imgBonus size-s imgBonus_10;1794

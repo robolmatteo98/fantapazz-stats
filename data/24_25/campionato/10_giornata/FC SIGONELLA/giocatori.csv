@@ -1,0 +1,19 @@
+﻿Stato;Giocatore;Ruolo;Voto;BonusMalus;CalciatoreId
+Titolare;De Gea;P;7;imgBonus size-s imgBonus_10;3448
+Titolare;Martin;D;5;imgBonus size-s imgBonus_6;3068
+Titolare;Dorgu;D;6.75;imgBonus size-s imgBonus_1|imgBonus size-s imgBonus_15;3155
+Titolare;Bastoni A.;D;6.75;imgBonus size-s imgBonus_9;1389
+Titolare;Mctominay;C;6.25;;3488
+Titolare;Reijnders;C;6;;3149
+Titolare;Busio;C;6.25;;2544
+Titolare;Zaccagni;C;7.25;imgBonus size-s imgBonus_1;748
+Titolare;Dovbyk;A;5.5;;3439
+Titolare;Djuric;A;7;imgBonus size-s imgBonus_1;854
+Titolare;Beltran;A;6.25;imgBonus size-s imgBonus_6|imgBonus size-s imgBonus_9;3178
+Riserva;Terracciano;P;;;1821
+Riserva;Gallo;D;6.5;imgBonus size-s imgBonus_9;2086
+Riserva;Delprato;D;5;;1905
+Riserva;Neres;C;6;;3472
+Riserva;Frendrup;C;7;imgBonus size-s imgBonus_1;2706
+Riserva;Tengstedt;A;6;;3449
+Riserva;Okafor;A;;;3150

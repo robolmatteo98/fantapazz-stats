@@ -1,0 +1,19 @@
+﻿Stato;Giocatore;Ruolo;Voto;BonusMalus;CalciatoreId
+Titolare;Carnesecchi;P;6;imgBonus size-s imgBonus_2;2299
+Titolare;Olivera;D;6.75;;2754
+Titolare;Masina;D;6.5;;566
+Titolare;Pedro Pereira;D;6;;1005
+Titolare;Acerbi;D;6;imgBonus size-s imgBonus_9;40
+Titolare;Ricci;C;6;;1269
+Titolare;Mkhitaryan;C;6;;2124
+Titolare;Rovella;C;6.25;imgBonus size-s imgBonus_6;2114
+Titolare;Castellanos;A;5.5;imgBonus size-s imgBonus_4|imgBonus size-s imgBonus_6|imgBonus size-s imgBonus_9;3100
+Titolare;Lukaku;A;7.5;imgBonus size-s imgBonus_3|imgBonus size-s imgBonus_9|imgBonus size-s imgBonus_9|imgBonus size-s imgBonus_15;2099
+Titolare;Castro;A;5.75;;3285
+Riserva;Rui Patricio;P;;;2508
+Riserva;Karlstrom;C;6.5;;3443
+Riserva;Ellertsson;C;5.5;;2802
+Riserva;Erlic;D;6.25;;1134
+Riserva;Spinazzola;D;;;957
+Riserva;Birindelli;D;;;2761
+Riserva;De Roon;C;7.25;imgBonus size-s imgBonus_1;670

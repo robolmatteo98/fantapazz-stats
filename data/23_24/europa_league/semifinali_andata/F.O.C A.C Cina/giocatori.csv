@@ -1,0 +1,19 @@
+﻿Stato;Giocatore;Ruolo;Voto;BonusMalus;CalciatoreId
+Titolare;Falcone;P;6;imgBonus size-s imgBonus_2;1449
+Titolare;Di Lorenzo;D;5.75;;1822
+Titolare;Buongiorno;D;6.5;imgBonus size-s imgBonus_6;1463
+Titolare;Bellanova;D;5.5;;1717
+Titolare;Thorstvedt;C;7;imgBonus size-s imgBonus_1|imgBonus size-s imgBonus_6|imgBonus size-s imgBonus_15;2772
+Titolare;Mazzitelli;C;6.5;;1290
+Titolare;Mkhitaryan;C;5.75;;2124
+Titolare;Brescianini;C;6.5;;1903
+Titolare;Noslin;A;5.75;;3277
+Titolare;Thuram;A;5.75;;3073
+Titolare;Lucca;A;6.75;imgBonus size-s imgBonus_1|imgBonus size-s imgBonus_6;3090
+Riserva;Caprile;P;6.25;imgBonus size-s imgBonus_2;1904
+Riserva;Calafiori;D;;;2143
+Riserva;Dossena;D;6;;590
+Riserva;Lovric;C;6.5;;2762
+Riserva;Zielinski;C;5;;486
+Riserva;Gonzalez N.;A;6.25;imgBonus size-s imgBonus_9;2507
+Riserva;Sanabria;A;7.25;imgBonus size-s imgBonus_1;416

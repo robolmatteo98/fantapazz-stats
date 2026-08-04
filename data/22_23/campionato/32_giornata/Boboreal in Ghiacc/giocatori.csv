@@ -1,0 +1,19 @@
+﻿Stato;Giocatore;Ruolo;Voto;BonusMalus;CalciatoreId
+Titolare;Silvestri;P;7;imgBonus size-s imgBonus_2;1599
+Titolare;Parisi;D;7;imgBonus size-s imgBonus_6;2492
+Titolare;Mazzocchi;D;6;;2479
+Titolare;Buongiorno;D;6.25;imgBonus size-s imgBonus_9;1463
+Titolare;Samardzic;C;5.5;;2541
+Titolare;Pereyra;C;6.5;imgBonus size-s imgBonus_6;367
+Titolare;Barak;C;5.75;;1622
+Titolare;Winks;C;4.75;;2861
+Titolare;Beto;A;5.5;;2590
+Titolare;Osimhen;A;5.5;;2290
+Titolare;Nestorovski;A;6;;1202
+Riserva;Carnesecchi;P;5.5;imgBonus size-s imgBonus_2|imgBonus size-s imgBonus_2|imgBonus size-s imgBonus_2|imgBonus size-s imgBonus_2|imgBonus size-s imgBonus_2;2299
+Riserva;Sernicola;D;5.25;;1838
+Riserva;Lazzari;D;6.5;;1542
+Riserva;Vilhena;C;6;;2817
+Riserva;Djuric;A;5.5;;854
+Riserva;Gaich;A;5.75;;2432
+Riserva;Lookman;C;6;imgBonus size-s imgBonus_9;2812

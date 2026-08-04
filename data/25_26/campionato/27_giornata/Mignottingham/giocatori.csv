@@ -1,0 +1,19 @@
+﻿Stato;Giocatore;Ruolo;Voto;BonusMalus;CalciatoreId
+Titolare;Perin;P;6;imgBonus size-s imgBonus_10;369
+Titolare;Dumfries;D;6.25;;2551
+Titolare;Delprato;D;4.5;imgBonus size-s imgBonus_6;1905
+Titolare;Palestra;D;5;;2937
+Titolare;Obrador;D;6.5;;3885
+Titolare;Yildiz;C;7.5;imgBonus size-s imgBonus_9;2952
+Titolare;Vlasic;C;6.75;;2827
+Titolare;Colombo;A;6;;2309
+Titolare;Simeone;A;7.25;imgBonus size-s imgBonus_1;1343
+Titolare;Orsolini;A;6.25;;1519
+Titolare;Bonazzoli;A;5.5;;102
+Riserva;Di Gregorio;P;;;1429
+Riserva;Adams;A;7;;3421
+Riserva;Gudmundsson;A;7;imgBonus size-s imgBonus_1|imgBonus size-s imgBonus_9;2713
+Riserva;Rodriguez J.;C;;;3711
+Riserva;Cambiaghi;C;6.25;;1975
+Riserva;Frendrup;C;6.25;;2706
+Riserva;Obert;D;4;imgBonus size-s imgBonus_7;2600

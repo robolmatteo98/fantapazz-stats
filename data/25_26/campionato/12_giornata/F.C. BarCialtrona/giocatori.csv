@@ -1,0 +1,19 @@
+﻿Stato;Giocatore;Ruolo;Voto;BonusMalus;CalciatoreId
+Titolare;Maignan;P;5.5;imgBonus size-s imgBonus_2|imgBonus size-s imgBonus_2|imgBonus size-s imgBonus_6;2498
+Titolare;Dimarco;D;6.5;imgBonus size-s imgBonus_9|imgBonus size-s imgBonus_9;599
+Titolare;Kalulu;D;6;imgBonus size-s imgBonus_6;2277
+Titolare;Spinazzola;D;6;;957
+Titolare;Zaniolo;C;5.5;;1827
+Titolare;Modric;C;6.5;;3734
+Titolare;Odgaard;C;7;imgBonus size-s imgBonus_1;1793
+Titolare;Calhanoglu;C;7;imgBonus size-s imgBonus_1;1507
+Titolare;Zaccagni;C;6.75;;748
+Titolare;Mckennie;C;5.75;imgBonus size-s imgBonus_9;2297
+Titolare;Leao;A;6;;2089
+Riserva;Terracciano;P;;;1821
+Riserva;Lauriente;A;6.75;imgBonus size-s imgBonus_9;2857
+Riserva;Krstovic;A;5;;3191
+Riserva;Zielinski;C;6.5;;486
+Riserva;Doig;D;6.5;;2782
+Riserva;Gila;D;5.25;imgBonus size-s imgBonus_7;2776
+Riserva;Loftus Cheek;C;6.25;;3077
